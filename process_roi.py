@@ -69,7 +69,7 @@ class FrameProcessor:
             roi_mask = create_roi_mask(prev_frame.shape, roi_points)
 
             # Extract ROI from the frame using the mask
-            roi_image, mask = extract_resize_roi(prev_frame, roi_points, target_size=(100, 100))
+            roi_image, mask = extract_resize_roi(frame, roi_points, target_size=(100, 100))
 
             # Prepare ROI image for the model
             roi_inputs = image_processor(images=roi_image, return_tensors="pt")

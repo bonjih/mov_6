@@ -5,20 +5,29 @@ import numpy as np
 from PIL import Image
 from functools import cache
 
+# Check if GPU is available
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 @cache
 def load_depth_models():
     image_processor = AutoImageProcessor.from_pretrained("LiheYoung/depth-anything-small-hf")
     model = AutoModelForDepthEstimation.from_pretrained("LiheYoung/depth-anything-small-hf")
+    model.to(device)  # Move model to GPU if available
     return image_processor, model
 
 
 def process_frame(frame, inputs, model):
+    if torch.cuda.is_available():
+        print("GPU is available!")
+    else:
+        print("GPU is not available. Using CPU.")
 
+    # Move inputs to GPU
+    inputs_gpu = {key: tensor.to(device) for key, tensor in inputs.items()}
 
     # Perform depth estimation
     with torch.no_grad():
-        outputs = model(**inputs)
+        outputs = model(**inputs_gpu)
         predicted_depth = outputs.predicted_depth
 
     # Interpolate to original size
@@ -49,5 +58,3 @@ def process_frame(frame, inputs, model):
     blended_frame = cv2.bitwise_and(frame, frame, mask=mask)
 
     return blended_frame
-
-
