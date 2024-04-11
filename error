@@ -1,0 +1,46 @@
+Traceback (most recent call last):
+  File "C:/Users/hamibenb/PycharmProjects/motion_detect_depth/main.py", line 41, in <module>
+    main()
+  File "C:/Users/hamibenb/PycharmProjects/motion_detect_depth/main.py", line 37, in main
+    video_processor.process_video()
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\video_streamer.py", line 48, in process_video
+    frame_mask = roi_frame.process_frame(frame, prev_frame, ts)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\process_roi.py", line 75, in process_frame
+    frame_with_depth = process_frame(roi_image, roi_inputs, model)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\depth_anything.py", line 29, in process_frame
+    outputs = model(**inputs_gpu)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\transformers\models\depth_anything\modeling_depth_anything.py", line 435, in forward
+    outputs = self.backbone.forward_with_filtered_kwargs(
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\transformers\utils\backbone_utils.py", line 227, in forward_with_filtered_kwargs
+    return self(*args, **filtered_kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\transformers\models\dinov2\modeling_dinov2.py", line 825, in forward
+    embedding_output = self.embeddings(pixel_values)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\transformers\models\dinov2\modeling_dinov2.py", line 121, in forward
+    embeddings = self.patch_embeddings(pixel_values.to(dtype=target_dtype))
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\transformers\models\dinov2\modeling_dinov2.py", line 169, in forward
+    embeddings = self.projection(pixel_values).flatten(2).transpose(1, 2)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\conv.py", line 460, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "C:\Users\hamibenb\PycharmProjects\motion_detect_depth\venv\lib\site-packages\torch\nn\modules\conv.py", line 456, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+RuntimeError: Input type (torch.cuda.FloatTensor) and weight type (torch.FloatTensor) should be the same
