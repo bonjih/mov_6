@@ -1,0 +1,14 @@
+
+# Check if GPU is available
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Move the model to the appropriate device
+model.to(device)
+
+# Move the input tensors to the appropriate device
+inputs_gpu = {key: tensor.to(device) for key, tensor in inputs.items()}
+
+# Perform depth estimation
+with torch.no_grad():
+    outputs = model(**inputs_gpu)
+    predicted_depth = outputs.predicted_depth
