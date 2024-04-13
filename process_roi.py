@@ -8,6 +8,7 @@ import numpy as np
 import global_params_variables
 from depth_anything import load_depth_models, process_frame
 from dust_detect import detect_blur_fft
+from utils import get_centre, get_contours
 from vid_lables import draw_roi_poly, dusty_labels, timestamp, centre_labels
 
 # setup
@@ -70,6 +71,9 @@ class FrameProcessor:
 
             # Extract ROI from the frame using the mask
             roi_image, mask = extract_resize_roi(frame, roi_points, target_size=(100, 100))
+            cnts = get_contours(roi_mask, mask)
+            cX, cY = get_centre(cnts)
+
 
             # Prepare ROI image for the model
             roi_inputs = image_processor(images=roi_image, return_tensors="pt")
@@ -83,5 +87,5 @@ class FrameProcessor:
 
             # Update frame with depth map for ROI
             frame[resized_mask != 0] = depth_resized[resized_mask != 0]
-
+            centre_labels(frame, roi_key, cX, cY)
         return frame

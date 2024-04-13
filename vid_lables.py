@@ -29,11 +29,10 @@ def display(frame, bridge_text, roi_key, roi_points):
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
 
 
-def centre_labels(cX, cY, frame_mask, roi_key):
-
-    cv2.circle(frame_mask, (cX, cY), 2, (255, 255, 255), 1)
-    cv2.putText(frame_mask, roi_key, (cX - 20, cY - 20),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+def centre_labels(frame, roi_key, cX, cY):
+    cv2.circle(frame, (cX, cY), 2, (255, 255, 255), 1)
+    # cv2.putText(frame, roi_key, (cX - 20, cY - 20),
+    #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
 
 
 def draw_roi_poly(frame, roi_key, roi_points):

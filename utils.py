@@ -24,6 +24,20 @@ def make_csv(data, path):
             data_out.to_csv(path, mode='a', header=False, index=False)
 
 
+def get_contours(gray, mask):
+    diff_roi = cv2.bitwise_and(gray, gray, mask=mask)
+    _, thresh = cv2.threshold(diff_roi, 10, 255, cv2.THRESH_BINARY)
+    cnts, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    return cnts
+
+
+def get_centre(cnts):
+    for c in cnts:
+        M = cv2.moments(c)
+        cX = int(M["m10"] / M["m00"])
+        cY = int(M["m01"] / M["m00"])
+        return cX, cY
+
 def make_plot():
     var1 = 'win_roi_1'
     var2 = 'win_roi_2'
