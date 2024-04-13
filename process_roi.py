@@ -3,7 +3,7 @@ from collections import deque
 import cv2
 import torch
 import numpy as np
-from PIL import Image
+
 
 import global_params_variables
 from depth_anything import load_depth_models, process_frame
