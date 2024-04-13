@@ -40,19 +40,26 @@ def get_centre(cnts):
 
 
 def create_rectangle_array(cX, cY):
+    # Calculate the starting and ending coordinates of the rectangle
+    startX = max(0, cX - 50)
+    endX = min(99, cX + 50)
+    startY = max(0, cY - 50)
+    endY = min(99, cY + 50)
+
+    # Create the rectangle coordinates array
+    rectangle_coordinates = np.array([[startX, startY],
+                                       [endX, startY],
+                                       [endX, endY],
+                                       [startX, endY],
+                                       [startX, startY]])
+
+    # Create an empty array
     rectangle = np.zeros((100, 100))
 
-    startX = cX - 50
-    endX = cX + 50
-    startY = cY - 50
-    endY = cY + 50
+    # Marking the rectangle area with 1s
+    rectangle[startY:endY + 1, startX:endX + 1] = 1
 
-    # Mark the two opposite corners with 1
-    rectangle[startY, startX] = 1
-    rectangle[endY-1, endX-1] = 1
-
-    return rectangle
-
+    return rectangle_coordinates
 
 
 
