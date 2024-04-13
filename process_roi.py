@@ -74,7 +74,6 @@ class FrameProcessor:
             cnts = get_contours(roi_mask, mask)
             cX, cY = get_centre(cnts)
 
-
             # Prepare ROI image for the model
             roi_inputs = image_processor(images=roi_image, return_tensors="pt")
 

@@ -38,6 +38,22 @@ def get_centre(cnts):
         cY = int(M["m01"] / M["m00"])
         return cX, cY
 
+
+def create_rectangle_array(cX, cY):
+    rectangle = np.zeros((100, 100))
+
+    startX = cX - 50
+    endX = cX + 50
+    startY = cY - 50
+    endY = cY + 50
+
+    rectangle[startY:endY, startX:endX] = 0
+
+    return rectangle
+
+
+
+
 def make_plot():
     var1 = 'win_roi_1'
     var2 = 'win_roi_2'
