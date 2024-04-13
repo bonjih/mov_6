@@ -47,7 +47,9 @@ def create_rectangle_array(cX, cY):
     startY = cY - 50
     endY = cY + 50
 
-    rectangle[startY:endY, startX:endX] = 0
+    # Mark the two opposite corners with 1
+    rectangle[startY, startX] = 1
+    rectangle[endY-1, endX-1] = 1
 
     return rectangle
 
