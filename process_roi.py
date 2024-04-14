@@ -8,7 +8,7 @@ import numpy as np
 import global_params_variables
 from depth_anything import load_depth_models, process_frame
 from dust_detect import detect_blur_fft
-from utils import get_centre, get_contours
+from utils import get_centre, get_contours, create_rectangle_array
 from vid_lables import draw_roi_poly, dusty_labels, timestamp, centre_labels
 
 # setup
@@ -78,7 +78,7 @@ class FrameProcessor:
             roi_inputs = image_processor(images=roi_image, return_tensors="pt")
 
             # Process frame with depth map
-            frame_with_depth = process_frame(roi_image, roi_inputs, model)
+            frame_with_depth = process_frame(roi_image, roi_inputs, model, ts)
             depth_resized = cv2.resize(frame_with_depth, (frame.shape[1], frame.shape[0]))
 
             # Resize the boolean mask to match the dimensions of the original frame
