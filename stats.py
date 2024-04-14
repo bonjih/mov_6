@@ -2,6 +2,9 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 import cv2
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
 
 def calculate_mean_and_std(tensor):
     """
@@ -157,3 +160,40 @@ def time_series_analysis(depth_sequence):
         depth_variances.append(depth_variance)
 
     return depth_means, depth_variances
+
+
+
+
+def compute_r_squared(depth_sequence, time_interval):
+    """
+    Compute R² value for linear regression on a depth sequence.
+
+    Args:
+    - depth_sequence: List of PyTorch tensors representing the depth images over time
+    - time_interval: Time interval between consecutive frames (in seconds)
+
+    Returns:
+    - r_squared: R² value for the linear regression model
+    """
+    # Extract depth means and convert to NumPy arrays
+    depth_means = np.array([torch.mean(tensor).item() for tensor in depth_sequence])
+
+    # Generate time steps in seconds
+    time_steps = np.arange(len(depth_sequence)) * time_interval
+
+    # Reshape time_steps to a 2D array (required by scikit-learn)
+    time_steps_2d = time_steps.reshape(-1, 1)
+
+    # Fit linear regression model
+    regression_model = LinearRegression()
+    regression_model.fit(time_steps_2d, depth_means)
+
+    # Predict the mean depth using the regression model
+    predicted_depth_means = regression_model.predict(time_steps_2d)
+
+    # Compute R²
+    r_squared = r2_score(depth_means, predicted_depth_means)
+    print("R²:", r_squared)
+
+
+    return r_squared
