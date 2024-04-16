@@ -12,3 +12,20 @@ inputs_gpu = {key: tensor.to(device) for key, tensor in inputs.items()}
 with torch.no_grad():
     outputs = model(**inputs_gpu)
     predicted_depth = outputs.predicted_depth
+
+
+ Time Step   roi  Time (s)  Mean Depth  Trend
+0          0  None      80.0    8.336488      0
+   Time Step   roi  Time (s)  Mean Depth  Trend
+0          0  None      80.0    8.336488      0
+   Time Step    roi  Time (s)  Mean Depth  Trend
+0          1  roi_1      80.0    8.332146      0
+   Time Step   roi  Time (s)  Mean Depth  Trend
+0          0  None      80.0    8.336488      0
+   Time Step    roi  Time (s)  Mean Depth  Trend
+0          1  roi_1      80.0    8.332146      0
+   Time Step    roi  Time (s)  Mean Depth     Trend
+0          2  roi_2     160.0    8.336878  0.059152
+   Time Step   roi  Time (s)  Mean Depth  Trend
+0          0  None      80.0    8.336488      0
+   Time Step    roi  Time (s)  Mean Depth  Trend
