@@ -29,3 +29,18 @@ with torch.no_grad():
    Time Step   roi  Time (s)  Mean Depth  Trend
 0          0  None      80.0    8.336488      0
    Time Step    roi  Time (s)  Mean Depth  Trend
+
+
+# Initialize an empty list to store DataFrames
+df_list = []
+
+# Your loop to generate DataFrames goes here
+for each_iteration:
+    # Generate each DataFrame and append it to df_list
+    df_list.append(new_df)
+
+# Concatenate DataFrames and filter out rows where 'roi' is 'None'
+final_df = pd.concat([df[df['roi'] != 'None'] for df in df_list], ignore_index=True)
+
+# Save final_df to CSV
+final_df.to_csv('output.csv', index=False)
