@@ -44,3 +44,36 @@ final_df = pd.concat([df[df['roi'] != 'None'] for df in df_list], ignore_index=T
 
 # Save final_df to CSV
 final_df.to_csv('output.csv', index=False)
+
+
+FROM nvidia/cuda:12.3.2-base-ubuntu22.04
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get install -y python3.11-dev # Python 3.11 specific items 
+RUN apt-get install -y python3-opencv python3-pip 
+RUN apt-get install -y libglib2.0-0 # Others
+
+COPY . /home/bhamilton/scripts/depth_anything_special
+
+WORKDIR /home/bhamilton/scripts/depth_anything_special
+
+#COPY requirements.txt /home/bhamilton/scripts/depth_anything_special/requirements.txt
+
+RUN python3 -m pip install -r requirements.txt
+RUN python3 -m pip install --upgrade pip
+
+
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+
+
+ENTRYPOINT ["python3", "main.py"]
+
+ERROR [ 9/11] RUN python3 -m pip install -r requirements.txt                                                   1.0s
+------
+ > [ 9/11] RUN python3 -m pip install -r requirements.txt:
+#13 0.942 ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'
+------
+executor failed running [/bin/sh -c python3 -m pip install -r requirements.txt]: exit code: 1
