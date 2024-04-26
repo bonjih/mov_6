@@ -1,3 +1,15 @@
+desired_values = []
+for item in data:
+    key_parts = item['Key'].split('/')
+    if len(key_parts) >= 2:
+        desired_values.append(key_parts[1])
+
+print(desired_values)
+
+
+
+
+
 
 # Check if GPU is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
