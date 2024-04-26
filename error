@@ -94,6 +94,51 @@ executor failed running [/bin/sh -c python3 -m pip install -r requirements.txt]:
 
 [{'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000000.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 35, tzinfo=tzlocal()), 'ETag': '"c052a1f3b3eec0ada5bc7fcaaff2152a"', 'Size': 75459, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000001.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 36, tzinfo=tzlocal()), 'ETag': '"b8acff1047e4bfbaf16c40e3147c4728"', 'Size': 76281, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000002.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()), 'ETag': '"913c1b743615b81c029fb9f279ed66b4"', 'Size': 76532, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000003.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()), 'ETag': '"70a53200c76c836ed41522bff1b208ee"', 'Size': 76648, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000004.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()), 'ETag': '"5e34b596050c9fd8bbc1ab99ec3c2241"', 'Size': 76489, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}
 
+import pandas as pd
+
+def find_matching_video_ids(csv_file, data):
+    try:
+        # Read the CSV file into a pandas DataFrame
+        df = pd.read_csv(csv_file)
+        
+        # Extract the 'video_id' column into a list
+        video_ids = df['video_id'].tolist()
+
+        # Extract the desired values from the given data
+        desired_values = []
+        for item in data:
+            key_parts = item['Key'].split('/')
+            if len(key_parts) >= 2:
+                desired_values.append(key_parts[1])
+
+        # Find matching values between desired_values and video_ids
+        matching_values = [value for value in desired_values if value in video_ids]
+
+        return matching_values
+    
+    except FileNotFoundError:
+        print("Error: File not found.")
+        return None
+    except KeyError:
+        print("Error: 'video_id' column not found in the CSV file.")
+        return None
+    except Exception as e:
+        print("An error occurred:", e)
+        return None
+
+# Example usage:
+csv_file = 'bridgeing_videos_20240419.csv'
+
+data = [
+    {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000000.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 35, tzinfo=tzlocal()), 'ETag': '"c052a1f3b3eec0ada5bc7fcaaff2152a"', 'Size': 75459, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, 
+    {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000001.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 36, tzinfo=tzlocal()), 'ETag': '"b8acff1047e4bfbaf16c40e3147c4728"', 'Size': 76281, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, 
+    {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000002.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()), 'ETag': '"913c1b743615b81c029fb9f279ed66b4"', 'Size': 76532, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, 
+    {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000003.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()), 'ETag': '"70a53200c76c836ed41522bff1b208ee"', 'Size': 76648, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}, 
+    {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000004.jpg', 'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()), 'ETag': '"5e34b596050c9fd8bbc1ab99ec3c2241"', 'Size': 76489, 'StorageClass': 'STANDARD', 'Owner': {'DisplayName': 'dl-aws-iroccompvis-npe', 'ID': '6ad35284ba06a5257f5447cdca1867f06973b2cc6ccd609ff953a8ae9a798386'}}
+]
+
+matching_video_ids = find_matching_video_ids(csv_file, data)
+print(matching_video_ids)
 
 
 
