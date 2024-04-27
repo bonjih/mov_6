@@ -131,8 +131,10 @@ def find_matching_video_ids(csv_file, data):
 
 
 import boto3
+import os
+import boto3
 
-def copy_files(source_bucket, dest_bucket, filenames, step=1):
+def copy_files(source_bucket, dest_bucket, source_subfolder, dest_subfolder, filenames, step=1):
     try:
         # Initialize S3 client
         s3_client = boto3.client('s3')
@@ -142,9 +144,9 @@ def copy_files(source_bucket, dest_bucket, filenames, step=1):
                 # Copy the file from the source bucket to the destination bucket
                 copy_source = {
                     'Bucket': source_bucket,
-                    'Key': filename
+                    'Key': f"{source_subfolder}/{filename}"  # Include the source subfolder key
                 }
-                dest_key = f"{dest_bucket}/{os.path.splitext(filename)[0]}/{filename}"
+                dest_key = f"{dest_subfolder}/{os.path.splitext(filename)[0]}/{filename}"  # Include the destination subfolder key
                 
                 # Perform the S3 copy operation
                 s3_client.copy_object(CopySource=copy_source, Bucket=dest_bucket, Key=dest_key)
@@ -152,4 +154,5 @@ def copy_files(source_bucket, dest_bucket, filenames, step=1):
                 print(f"File '{filename}' copied successfully to '{dest_key}' in bucket '{dest_bucket}'.")
     except Exception as e:
         print("An error occurred while copying files:", e)
+
 
