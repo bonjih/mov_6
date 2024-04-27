@@ -137,6 +137,9 @@ import boto3
 import os
 import boto3
 
+import os
+import boto3
+
 def copy_files(source_bucket, dest_bucket, source_subfolder, dest_subfolder, filenames, step=1):
     try:
         # Initialize S3 client
@@ -144,12 +147,20 @@ def copy_files(source_bucket, dest_bucket, source_subfolder, dest_subfolder, fil
 
         for i, filename in enumerate(filenames):
             if i % step == 0:
+                # Construct the source and destination keys
+                source_key = f"{source_subfolder}/{filename}"
+                dest_key = f"{dest_subfolder}/{os.path.splitext(filename)[0]}/{filename}"
+
+                # Check if destination directory exists, create if not
+                dest_dir = os.path.dirname(dest_key)
+                if dest_dir and not s3_client.head_object(Bucket=dest_bucket, Key=dest_dir):
+                    s3_client.put_object(Bucket=dest_bucket, Key=dest_dir, Body='')
+
                 # Copy the file from the source bucket to the destination bucket
                 copy_source = {
                     'Bucket': source_bucket,
-                    'Key': f"{source_subfolder}/{filename}"  # Include the source subfolder key
+                    'Key': source_key
                 }
-                dest_key = f"{dest_subfolder}/{os.path.splitext(filename)[0]}/{filename}"  # Include the destination subfolder key
                 
                 # Perform the S3 copy operation
                 s3_client.copy_object(CopySource=copy_source, Bucket=dest_bucket, Key=dest_key)
