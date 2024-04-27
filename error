@@ -130,4 +130,13 @@ def find_matching_video_ids(csv_file, data):
         return None
 
 
-
+def copy_files(source_folder, dest_folder, filenames, step=1):
+    try:
+        for i, filename in enumerate(filenames):
+            if i % step == 0:
+                source_path = os.path.join(source_folder, filename)
+                dest_path = os.path.join(dest_folder, filename)
+                shutil.copyfile(source_path, dest_path)
+                print(f"File '{filename}' copied successfully.")
+    except Exception as e:
+        print("An error occurred while copying files:", e)
