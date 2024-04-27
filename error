@@ -134,6 +134,9 @@ import boto3
 import os
 import boto3
 
+import os
+import boto3
+
 def copy_files(source_bucket, dest_bucket, source_subfolder, dest_subfolder, filenames, step=1):
     try:
         # Initialize S3 client
@@ -151,8 +154,9 @@ def copy_files(source_bucket, dest_bucket, source_subfolder, dest_subfolder, fil
                 # Perform the S3 copy operation
                 s3_client.copy_object(CopySource=copy_source, Bucket=dest_bucket, Key=dest_key)
                 
-                print(f"File '{filename}' copied successfully to '{dest_key}' in bucket '{dest_bucket}'.")
+                print(f"File '{filename}' copied successfully to '{dest_bucket}/{dest_key}'.")
     except Exception as e:
         print("An error occurred while copying files:", e)
+
 
 
