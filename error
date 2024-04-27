@@ -134,9 +134,15 @@ def copy_files(source_folder, dest_folder, filenames, step=1):
     try:
         for i, filename in enumerate(filenames):
             if i % step == 0:
+                # Create a directory in the destination folder with the name of the file
+                dir_name = os.path.splitext(filename)[0]
+                dest_dir = os.path.join(dest_folder, dir_name)
+                os.makedirs(dest_dir, exist_ok=True)
+
+                # Copy the file to the newly created directory
                 source_path = os.path.join(source_folder, filename)
-                dest_path = os.path.join(dest_folder, filename)
+                dest_path = os.path.join(dest_dir, filename)
                 shutil.copyfile(source_path, dest_path)
-                print(f"File '{filename}' copied successfully.")
+                print(f"File '{filename}' copied successfully to '{dest_dir}'.")
     except Exception as e:
         print("An error occurred while copying files:", e)
