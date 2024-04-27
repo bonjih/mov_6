@@ -140,6 +140,18 @@ import boto3
 import os
 import boto3
 
+import boto3
+
+def create_directory(s3_client, bucket_name, directory_key):
+    try:
+        # Check if the directory exists by listing objects with the given prefix
+        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=directory_key)
+        if 'Contents' not in response:
+            # If the directory doesn't exist, create an empty object to represent it
+            s3_client.put_object(Bucket=bucket_name, Key=directory_key.rstrip('/') + '/')
+    except Exception as e:
+        print("An error occurred while creating directory:", e)
+
 def copy_files(source_bucket, dest_bucket, source_subfolder, dest_subfolder, filenames, step=1):
     try:
         # Initialize S3 client
@@ -151,10 +163,9 @@ def copy_files(source_bucket, dest_bucket, source_subfolder, dest_subfolder, fil
                 source_key = f"{source_subfolder}/{filename}"
                 dest_key = f"{dest_subfolder}/{os.path.splitext(filename)[0]}/{filename}"
 
-                # Check if destination directory exists, create if not
+                # Create destination directory if it doesn't exist
                 dest_dir = os.path.dirname(dest_key)
-                if dest_dir and not s3_client.head_object(Bucket=dest_bucket, Key=dest_dir):
-                    s3_client.put_object(Bucket=dest_bucket, Key=dest_dir, Body='')
+                create_directory(s3_client, dest_bucket, dest_dir)
 
                 # Copy the file from the source bucket to the destination bucket
                 copy_source = {
