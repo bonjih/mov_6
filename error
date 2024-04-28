@@ -1,3 +1,77 @@
+# gets video id's from csv, gets matching id's in dev-iroccvdmsstack-dmsbucketb119a736-rtlxxvez6thx/frames
+def find_matching_video_ids(df, data_dms):
+  
+    try:        
+        # Extract the 'video_id' column into a list
+        csv_video_ids = df['video_id'].tolist()
+   
+        # Extract the desired values from the given data
+        dms_vid_id = []  # frames name from dms upload
+        dms_vid_files = []  # frames files from dms upload
+   
+        contents = s3.list_objects_v2(Bucket=bucket_dms, Prefix=frames_dms)['Contents']
+    
+        for item in contents:
+            key_parts = item['Key'].split('/')
+            dir_name = key_parts[1]
+            file_name = key_parts[2]  
+            dms_vid_id.append([dir_name, file_name])
+                               
+                               
+        print(dms_vid_id)
+        # Find matching values between desired_values and csv_video_ids_stripped using list intersection
+        s = set(dms_vid_id)
+        matching_values = [x for x in csv_video_ids if x not in s]
+        
+        return matching_values
+    
+    except FileNotFoundError:
+        print("Error: File not found.")
+        return None
+    except KeyError:
+        print("Error: 'video_id' (or item key) column not found in the CSV file.")
+        return None
+    except Exception as e:
+        print("An error occurred:", e)
+        return None
+
+
+dms_vid_id
+[['(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s', '(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000000.jpg'], ['(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s', '(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000001.jpg'], ['(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s', '(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000002.jpg']]
+
+['(10.114.237.108) - TV401C PC1 ROM Bin-2024.04.12-06.00.00-15m00s', '(10.114.237.108) - TV401C PC1 ROM Bin-2024.04.12-07.00.00-15m00s', '(10.114.237.108) - TV401C PC1 ROM Bin-2024.04.12-08.15.00-15m00s', '(10.114.237.108) - TV401C PC1 ROM Bin-2024.04.12-09.15.00-15m00s', '(10.114.237.108) - TV401C PC1 ROM Bin-2024.04.12-10.00.00-15m00s', '(10.114.237.108) - TV401C PC1 ROM Bin-2024.04.12-11.00.00-15m00s', '(10.114.237.108) - TV401C PC1 ROM Bin-2024.04.12-12.00.00-15m00s']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 desired_values = []
 for item in data:
     key_parts = item['Key'].split('/')
