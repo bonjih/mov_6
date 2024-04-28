@@ -1,39 +1,39 @@
 # gets video id's from csv, gets matching id's in dev-iroccvdmsstack-dmsbucketb119a736-rtlxxvez6thx/frames
 def find_matching_video_ids(df, data_dms):
-  
-    try:        
+    try:
         # Extract the 'video_id' column into a list
         csv_video_ids = df['video_id'].tolist()
-   
+
         # Extract the desired values from the given data
         dms_vid_id = []  # frames name from dms upload
         dms_vid_files = []  # frames files from dms upload
-   
-        contents = s3.list_objects_v2(Bucket=bucket_dms, Prefix=frames_dms)['Contents']
-    
-        for item in contents:
+
+        # Iterate through the DMS data and extract directory names and file names
+        for item in data_dms:
             key_parts = item['Key'].split('/')
             dir_name = key_parts[1]
-            file_name = key_parts[2]  
-            dms_vid_id.append([dir_name, file_name])
-                               
-                               
-        print(dms_vid_id)
-        # Find matching values between desired_values and csv_video_ids_stripped using list intersection
-        s = set(dms_vid_id)
-        matching_values = [x for x in csv_video_ids if x not in s]
-        
-        return matching_values
-    
-    except FileNotFoundError:
-        print("Error: File not found.")
-        return None
+            file_name = key_parts[2]
+            dms_vid_id.append(dir_name)
+            dms_vid_files.append(file_name)
+
+        # Find matching video IDs between CSV data and DMS data
+        matching_dirs = []
+        matching_file_names = []
+        for vid_id in csv_video_ids:
+            if vid_id in dms_vid_id:
+                index = dms_vid_id.index(vid_id)
+                matching_dirs.append(dms_vid_id[index])
+                matching_file_names.append(dms_vid_files[index])
+
+        return matching_dirs, matching_file_names
+
     except KeyError:
-        print("Error: 'video_id' (or item key) column not found in the CSV file.")
-        return None
+        print("Error: 'video_id' column not found in the CSV file.")
+        return None, None
     except Exception as e:
         print("An error occurred:", e)
-        return None
+        return None, None
+
 
 
 dms_vid_id
