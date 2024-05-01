@@ -30,3 +30,48 @@ def open_aws_s3(conn, bucket, prefix):
   'ETag': '"70a53200c76c836ed41522bff1b208ee"',
   'Size': 76648,
   'StorageClass': 'STANDARD'}]
+
+
+
+def filter_ids_in_s3(bucket_name, prefix, id_list):
+    # Initialize the S3 client
+    s3 = boto3.client('s3')
+
+    # Initialize a list to store object keys
+    object_keys = []
+
+    # Initial request to get the first batch of objects
+    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix, MaxKeys=1000)
+
+    # Extract object keys from the response
+    keys_on_page = [obj['Key'] for obj in response.get('Contents', [])]
+    object_keys.extend(keys_on_page)
+
+    # Check if there are more objects to retrieve
+    while response.get('NextContinuationToken'):
+        # Make a subsequent request to get the next batch of objects
+        response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix, MaxKeys=1000,
+                                      ContinuationToken=response['NextContinuationToken'])
+
+        # Extract object keys from the response
+        keys_on_page = [obj['Key'] for obj in response.get('Contents', [])]
+        object_keys.extend(keys_on_page)
+
+    # Extract folder names (IDs) from the object keys
+    folder_names = [key.split('/')[1] for key in object_keys]
+
+    # Filter folder names based on the IDs in the list
+    filtered_folders = [folder for folder in folder_names if folder in id_list]
+
+    # Construct filtered object keys based on the filtered folder names
+    filtered_keys = [key for key in object_keys if key.split('/')[1] in filtered_folders]
+
+    return filtered_keys
+
+# Example usage
+bucket_name = 'stack3'
+prefix = 'frames/'
+id_list = ['id_1', 'id_2', 'id_3']
+
+filtered_keys = filter_ids_in_s3(bucket_name, prefix, id_list)
+print(filtered_keys)
