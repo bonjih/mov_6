@@ -1,0 +1,32 @@
+def open_aws_s3(conn, bucket, prefix):
+    # get all video id's in bucket
+    contents =  conn.list_objects_v2(Bucket=bucket, Prefix=prefix)['Contents']
+    search_key = '.107'
+#     res = [val for key, val in  contents if search_key in key]
+    
+#     print(res) 
+    
+    
+    return contents
+
+
+{'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000000.jpg',
+  'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 35, tzinfo=tzlocal()),
+  'ETag': '"c052a1f3b3eec0ada5bc7fcaaff2152a"',
+  'Size': 75459,
+  'StorageClass': 'STANDARD'},
+ {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000001.jpg',
+  'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 36, tzinfo=tzlocal()),
+  'ETag': '"b8acff1047e4bfbaf16c40e3147c4728"',
+  'Size': 76281,
+  'StorageClass': 'STANDARD'},
+ {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000002.jpg',
+  'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()),
+  'ETag': '"913c1b743615b81c029fb9f279ed66b4"',
+  'Size': 76532,
+  'StorageClass': 'STANDARD'},
+ {'Key': 'frames/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s/(10.114.193.107) - TV522B TLO2 Chute A Front-2023.05.29-19.59.38-30m21s_0000003.jpg',
+  'LastModified': datetime.datetime(2024, 3, 22, 9, 7, 37, tzinfo=tzlocal()),
+  'ETag': '"70a53200c76c836ed41522bff1b208ee"',
+  'Size': 76648,
+  'StorageClass': 'STANDARD'}]
